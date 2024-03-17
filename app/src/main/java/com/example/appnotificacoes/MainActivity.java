@@ -28,6 +28,8 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
     private int contador = 0;
 
+    private static final String CHANNEL_ID = "donizete";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Botão para mudar de activity
         Button changeButton = findViewById(R.id.changeButton);
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,11 +53,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Botão para criar notificação
         Button notiButton = findViewById(R.id.notiButton);
-        notiButton.setOnClickListener(view -> createNotification());
+        notiButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNotification();
+            }
+        });
 
+        // Criação do canal de notificação
         createNotificationChannel();
 
+        // Solicita permissão para exibir notificações (apenas para SDK >= TIRAMISU)
         ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 isGranted -> {
@@ -68,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Método para criar o canal de notificação
     private void createNotificationChannel() {
         NotificationChannelCompat channel = new NotificationChannelCompat.Builder(
                 CHANNEL_ID,
@@ -80,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(channel);
     }
 
+    // Método para criar e exibir uma notificação
     @SuppressLint("MissingPermission")
     private void createNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -92,6 +106,4 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.notify(contador++, builder.build());
         }
     }
-
-    private static final String CHANNEL_ID = "donizete";
 }
