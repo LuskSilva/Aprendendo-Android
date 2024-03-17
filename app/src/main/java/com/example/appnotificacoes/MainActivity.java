@@ -28,7 +28,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
     private int contador = 0;
 
-    private static final String CHANNEL_ID = "donizete";
+    private static final String CHANNEL_ID = "channel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
